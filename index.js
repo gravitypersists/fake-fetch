@@ -28,13 +28,15 @@ const setLS = (key, val) => {
 }
 
 const fakeFetch = (config = {}, mockOptions) => {
+  const { delay } = config
   const options = { ...defaultOptions, ...mockOptions }
   const { url, method, body, success, error } = options
   const original = readLS(url)
   const func = config[url] ? { defaultMethods, ...config[url] }[method] : defaultMethods[method]
   const calculatedResult = func(original, body)
   setLS(url, calculatedResult)
-  setTimeout(() => { success(readLS(url)) }, config.delay || defaultDelay)
+  const wait = typeof config.delay === 'undefined' ? defaultDelay : config.delay
+  setTimeout(() => { success(readLS(url)) }, wait)
 }
 
 export default fakeFetch
