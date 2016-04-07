@@ -1,5 +1,3 @@
-import { LocalStorage } from 'node-localstorage'
-const localStorage = new LocalStorage('./scratch')
 
 const defaultMethods = {
   'get': (original) => original || null,

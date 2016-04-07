@@ -1,5 +1,6 @@
 import expect from 'expect'
 import fauxFetch from '../index'
+import localStorage from '../localStorage'
 
 const immediateFetch = fauxFetch({ delay: 0 })
 
