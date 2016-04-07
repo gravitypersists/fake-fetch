@@ -27,11 +27,11 @@ const setLS = (key, val) => {
   localStorage.setItem(key, JSON.stringify(val))
 }
 
-const fakeFetch = (customOptions) => {
+const fauxFetch = (customOptions) => {
   // partial application (kinda like currying), does not invoke fetch
   // until url is provided
   if (!customOptions.url) {
-    return (newOptions) => fakeFetch({ ...customOptions, ...newOptions })
+    return (newOptions) => fauxFetch({ ...customOptions, ...newOptions })
   }
 
   const options = { ...defaultOptions, ...customOptions }
@@ -44,4 +44,4 @@ const fakeFetch = (customOptions) => {
   setTimeout(() => { success(readLS(url)) }, wait)
 }
 
-export default fakeFetch
+export default fauxFetch

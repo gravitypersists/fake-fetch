@@ -1,7 +1,7 @@
 import expect from 'expect'
-import fakeFetch from '../index'
+import fauxFetch from '../index'
 
-const immediateFetch = fakeFetch({ delay: 0 })
+const immediateFetch = fauxFetch({ delay: 0 })
 
 describe('GET', () => {
   before((done) => {
@@ -52,7 +52,7 @@ describe('Configuring', () => {
   describe('delay', () => {
     it('waits at least the amount of time specified', (done) => {
       const before = Date.now()
-      fakeFetch({
+      fauxFetch({
         delay: 300,
         url: '/delay_test',
         success: (result) => {

@@ -1,15 +1,15 @@
 
-### Fake Fetch
+### Faux Fetch
 
 A utility that uses local storage to mock servers. Currently, it assumes the same API as [fancy-fetch](https://github.com/anyperk/fancy-fetch) as I intend to use it as a drop-in replacement with that library, though I'd like for it support raw fetch as well in the future.
 
 ## Usage
 
 ```
-import fakeFetch from 'fake-fetch'
+import fauxFetch from 'faux-fetch'
 
 // Puts an entry into local storage
-fakeFetch({
+fauxFetch({
   url: '/me',
   method: 'put',
   body: { name: 'Smeagol' }
@@ -19,7 +19,7 @@ fakeFetch({
 })
 
 // Get an entry from local storage
-fakeFetch({
+fauxFetch({
   url: '/me',
   success: (result) => {
     console.log(result) // { name: 'Smeagol' }
@@ -28,7 +28,7 @@ fakeFetch({
 
 ```
 
-In the real world, it takes some time for these requests to occur. fakeFetch uses `setTimeout` with a default delay of 200ms. You can provide your own custom delay, along with many other options, within the object passed to fakeFetch.
+In the real world, it takes some time for these requests to occur. fauxFetch uses `setTimeout` with a default delay of 200ms. You can provide your own custom delay, along with many other options, within the object passed to fauxFetch.
 
 # Options:
 
@@ -39,16 +39,16 @@ In the real world, it takes some time for these requests to occur. fakeFetch use
   - `delay`: *Number*
   - `custom`: *Object*
 
-If you do not provide a `url` parameter in these options, fakeFetch will give you a partially applied function, this will let you configure fetch how you please. For example:
+If you do not provide a `url` parameter in these options, fauxFetch will give you a partially applied function, this will let you configure fetch how you please. For example:
 
 ```
-const ImmediateFetch = fakeFetch({ delay: 0 })
+const ImmediateFetch = fauxFetch({ delay: 0 })
 ```
 
-Will give you a fake fetcher that does not wait the default 200ms. You might want to customize how your server API works, however:
+Will give you a faux fetcher that does not wait the default 200ms. You might want to customize how your server API works, however:
 
 ```
-const customFetch = fakeFetch({
+const customFetch = fauxFetch({
   custom: {
     '/me/get_ring': {
       'post': () => {

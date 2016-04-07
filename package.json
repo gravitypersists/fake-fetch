@@ -1,5 +1,5 @@
 {
-  "name": "fake-fetch",
+  "name": "faux-fetch",
   "version": "0.0.1",
   "description": "A utility for faking fetch requests",
   "main": "dist/index.js",
