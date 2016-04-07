@@ -34,9 +34,7 @@ const fakeFetch = (config = {}, mockOptions) => {
   const func = config[url] ? { defaultMethods, ...config[url] }[method] : defaultMethods[method]
   const calculatedResult = func(original, body)
   setLS(url, calculatedResult)
-  setTimeout(() => {
-    success(readLS(url))
-  }, config.delay || defaultDelay)
+  setTimeout(() => { success(readLS(url)) }, config.delay || defaultDelay)
 }
 
 export default fakeFetch
