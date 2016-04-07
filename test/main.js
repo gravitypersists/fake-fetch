@@ -51,16 +51,34 @@ describe('PUT', () => {
 
 describe('Configuring', () => {
   describe('delay', () => {
-    it('waits at least the amount of time specified', (done) => {
-      const before = Date.now()
-      fauxFetch({
-        delay: 300,
-        url: '/delay_test',
-        success: (result) => {
-          expect(Date.now() - before).toBeGreaterThan(300)
-          done();
-        }
+
+    context('when it is a number', () => {
+      it('waits at least the amount of time specified', (done) => {
+        const before = Date.now()
+        fauxFetch({
+          delay: 300,
+          url: '/delay_test',
+          success: (result) => {
+            expect(Date.now() - before).toBeGreaterThan(300)
+            done();
+          }
+        })
       })
     })
+
+    context('when it is a function', () => {
+      it('it waits the amount returned by invoking it', (done) => {
+        const before = Date.now()
+        fauxFetch({
+          delay: () => 300,
+          url: '/delay_test',
+          success: (result) => {
+            expect(Date.now() - before).toBeGreaterThan(300)
+            done();
+          }
+        })
+      })
+    })
+
   })
 })

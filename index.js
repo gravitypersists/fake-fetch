@@ -25,6 +25,14 @@ const setLS = (key, val) => {
   localStorage.setItem(key, JSON.stringify(val))
 }
 
+const resolveDelay = (delay) => {
+  switch (typeof delay) {
+    case 'number': return delay
+    case 'function': return delay()
+    default: return defaultOptions.delay
+  }
+}
+
 const fauxFetch = (customOptions) => {
   // partial application (kinda like currying), does not invoke fetch
   // until url is provided
@@ -38,8 +46,7 @@ const fauxFetch = (customOptions) => {
   const func = custom[url] ? { defaultMethods, ...custom[url] }[method] : defaultMethods[method]
   const calculatedResult = func(original, body)
   setLS(url, calculatedResult)
-  const wait = typeof delay === 'undefined' ? defaultDelay : delay
-  setTimeout(() => { success(readLS(url)) }, wait)
+  setTimeout(() => { success(readLS(url)) }, resolveDelay(delay))
 }
 
 export default fauxFetch
