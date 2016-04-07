@@ -1,8 +1,6 @@
 import { LocalStorage } from 'node-localstorage'
 const localStorage = new LocalStorage('./scratch')
 
-const defaultDelay = 200
-
 const defaultMethods = {
   'get': (original) => original || null,
   'put': (original, body) => body,
@@ -15,7 +13,9 @@ const defaultOptions = {
   method: 'get',
   body: {},
   success: () => {},
-  error: () => {}
+  error: () => {},
+  delay: 200,
+  custom: {}
 }
 
 const readLS = (key) => {
@@ -27,15 +27,14 @@ const setLS = (key, val) => {
   localStorage.setItem(key, JSON.stringify(val))
 }
 
-const fakeFetch = (config = {}, mockOptions) => {
-  const { delay } = config
-  const options = { ...defaultOptions, ...mockOptions }
-  const { url, method, body, success, error } = options
+const fakeFetch = (customOptions) => {
+  const options = { ...defaultOptions, ...customOptions }
+  const { url, method, body, success, error, delay, custom } = options
   const original = readLS(url)
-  const func = config[url] ? { defaultMethods, ...config[url] }[method] : defaultMethods[method]
+  const func = custom[url] ? { defaultMethods, ...custom[url] }[method] : defaultMethods[method]
   const calculatedResult = func(original, body)
   setLS(url, calculatedResult)
-  const wait = typeof config.delay === 'undefined' ? defaultDelay : config.delay
+  const wait = typeof delay === 'undefined' ? defaultDelay : delay
   setTimeout(() => { success(readLS(url)) }, wait)
 }
 

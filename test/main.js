@@ -3,7 +3,8 @@ import fakeFetch from '../index'
 
 describe('GET', () => {
   before((done) => {
-    fakeFetch({ delay: 10 }, {
+    fakeFetch({
+      delay: 0,
       url: '/get_test',
       method: 'put',
       body: { get: 'works' },
@@ -12,7 +13,8 @@ describe('GET', () => {
   })
 
   it('fetches the whole resource', (done) => {
-    fakeFetch(undefined, {
+    fakeFetch({
+      delay: 0,
       url: '/get_test',
       success: (result) => {
         expect(result.get).toEqual('works');
@@ -23,13 +25,25 @@ describe('GET', () => {
 })
 
 describe('PUT', () => {
-  it('works', (done) => {
-    fakeFetch(undefined, {
+  before((done) => {
+    fakeFetch({
+      delay: 0,
+      url: '/get_test',
+      method: 'put',
+      body: { put: 'does not work', really: true },
+      success: () => done()
+    })
+  })
+
+  it('replaces the whole resource', (done) => {
+    fakeFetch({
+      delay: 0,
       url: '/put_test',
       method: 'put',
       body: { put: 'works' },
       success: (result) => {
         expect(result.put).toEqual('works');
+        expect(result.really).toNotExist();
         done();
       }
     })
@@ -41,8 +55,7 @@ describe('Configuring', () => {
     it('waits at least the amount of time specified', (done) => {
       const before = Date.now()
       fakeFetch({
-        delay: 300
-      }, {
+        delay: 300,
         url: '/delay_test',
         success: (result) => {
           expect(Date.now() - before).toBeGreaterThan(300)
