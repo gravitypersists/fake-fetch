@@ -10,9 +10,16 @@ const defaultMethods = {
   'delete': (original) => null
 }
 
+const defaultOptions = {
+  method: 'get',
+  body: {},
+  success: () => {},
+  error: () => {}
+}
 
 const fakeFetch = (config = {}, mockOptions) => {
-  const { url, method, body, success, error } = mockOptions
+  const options = { ...defaultOptions, ...mockOptions }
+  const { url, method, body, success, error } = options
   const original = localStorage.getItem(url)
   const func = config[url] ? { defaultMethods, ...config[url] }[method] : defaultMethods[method]
   const calculatedResult = func(original, body)
