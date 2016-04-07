@@ -14,3 +14,20 @@ describe('PUT', () => {
     })
   })
 })
+
+describe('Configuring', () => {
+  describe('timeout', () => {
+    it('waits at least the amount of time specified', (done) => {
+      const before = Date.now()
+      fakeFetch({
+        delay: 300
+      }, {
+        url: '/test',
+        success: (result) => {
+          expect(Date.now() - before).toBeGreaterThan(300)
+          done();
+        }
+      })
+    })
+  })
+})
