@@ -18,15 +18,24 @@ const defaultOptions = {
   error: () => {}
 }
 
+const readLS = (key) => {
+  const item = localStorage.getItem(key)
+  return item ? JSON.parse(item) : null
+}
+
+const setLS = (key, val) => {
+  localStorage.setItem(key, JSON.stringify(val))
+}
+
 const fakeFetch = (config = {}, mockOptions) => {
   const options = { ...defaultOptions, ...mockOptions }
   const { url, method, body, success, error } = options
-  const original = localStorage.getItem(url)
+  const original = readLS(url)
   const func = config[url] ? { defaultMethods, ...config[url] }[method] : defaultMethods[method]
   const calculatedResult = func(original, body)
-  localStorage.setItem(url, JSON.stringify(calculatedResult))
+  setLS(url, calculatedResult)
   setTimeout(() => {
-    success(JSON.parse(localStorage.getItem(url)))
+    success(readLS(url))
   }, config.delay || defaultDelay)
 }
 
