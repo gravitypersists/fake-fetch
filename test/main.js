@@ -1,10 +1,11 @@
 import expect from 'expect'
 import fakeFetch from '../index'
 
+const immediateFetch = fakeFetch({ delay: 0 })
+
 describe('GET', () => {
   before((done) => {
-    fakeFetch({
-      delay: 0,
+    immediateFetch({
       url: '/get_test',
       method: 'put',
       body: { get: 'works' },
@@ -13,8 +14,7 @@ describe('GET', () => {
   })
 
   it('fetches the whole resource', (done) => {
-    fakeFetch({
-      delay: 0,
+    immediateFetch({
       url: '/get_test',
       success: (result) => {
         expect(result.get).toEqual('works');
@@ -26,8 +26,7 @@ describe('GET', () => {
 
 describe('PUT', () => {
   before((done) => {
-    fakeFetch({
-      delay: 0,
+    immediateFetch({
       url: '/get_test',
       method: 'put',
       body: { put: 'does not work', really: true },
@@ -36,8 +35,7 @@ describe('PUT', () => {
   })
 
   it('replaces the whole resource', (done) => {
-    fakeFetch({
-      delay: 0,
+    immediateFetch({
       url: '/put_test',
       method: 'put',
       body: { put: 'works' },

@@ -28,6 +28,12 @@ const setLS = (key, val) => {
 }
 
 const fakeFetch = (customOptions) => {
+  // partial application (kinda like currying), does not invoke fetch
+  // until url is provided
+  if (!customOptions.url) {
+    return (newOptions) => fakeFetch({ ...customOptions, ...newOptions })
+  }
+
   const options = { ...defaultOptions, ...customOptions }
   const { url, method, body, success, error, delay, custom } = options
   const original = readLS(url)
